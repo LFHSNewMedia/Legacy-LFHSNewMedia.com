@@ -1,0 +1,1 @@
+This is where image previews generated from videos are cached.

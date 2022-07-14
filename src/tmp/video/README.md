@@ -1,0 +1,1 @@
+This is where video files are staged for processing before they are uploaded to S3.

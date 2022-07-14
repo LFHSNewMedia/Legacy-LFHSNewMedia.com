@@ -1,0 +1,81 @@
+<?php
+	$this->load->view('general/header');
+?>
+
+<script type="text/javascript" src="<?php echo base_url("/js/jquery.easing.min.js"); ?>"></script>
+
+<link href="<?php echo base_url("/css/movingboxes.css"); ?>" media="screen" rel="stylesheet">
+<!--[if lt IE 9]>
+<link href="<?php echo base_url(); ?>/css/movingboxes-ie.css" rel="stylesheet" media="screen" />
+<![endif]-->
+<script src="<?php echo base_url("/js/jquery.movingboxes.min.js"); ?>"></script>
+<script src="<?php echo base_url("/js/jcarousellite_1.0.1.min.js"); ?>"></script>
+
+<script type="text/javascript">
+	$(function() {
+		$('#slider-one').movingBoxes({
+			startPanel   : 1,      // start with this panel
+			width        : 1000,    // overall width of movingBoxes (not including navigation arrows)
+			wrap         : false,   // if true, the panel will "wrap" (it really rewinds/fast forwards) at the ends
+			buildNav     : true,   // if true, navigation links will be added each panel
+			navFormatter : function(){ return "&#9679;"; }
+		});
+	});
+</script>
+<?php
+	$this->load->view('general/begin_body');
+	$this->load->view('general/navigation');
+?>
+<div id="PlayerTitle">
+	Featured Videos
+</div>
+<!-- <div id="GeneralContent"> -->
+	<!-- Slider #1 -->
+<div id="main_slider">
+	<ul id="slider-one">
+		<?php
+			foreach ($popular_slider as $popular_slide)
+			{
+		?>
+				<li>
+					<a href="<?php echo site_url("video/play/" . $popular_slide['identifier']); ?>"><img src="<?php echo(site_url('video/thumb/' . $popular_slide['identifier'] . '/856x480')); ?>" alt="<?php echo($popular_slide['title']); ?>"></a>
+					<h2><?php echo($popular_slide['title']); ?></h2>
+				</li>
+		<?php
+			}
+		?>
+	</ul> <!-- end Slider #1 -->
+</div>
+	
+	<!-- Start featured tag sliders -->
+	
+	<?php foreach ($features as $feature) { ?>
+		<h2 class="featurecarousel_title"><?php echo($feature[0]->name); ?></h2>
+		<div class="featurecarousel">
+			<ul>
+				<?php foreach ($feature[1] as $feature_video) { ?>
+					<li>
+						<a href="<?php echo site_url("video/play/" . $feature_video->identifier); ?>"><img class="featuredslider_image" src="<?php echo(site_url('video/thumb/' . $feature_video->identifier . '/214x120')); ?>" alt="<?php echo($feature_video->name); ?>" width="214" height="120" ></a>
+					</li>
+				<?php } ?>
+			</ul>
+		</div>
+	<?php } ?>
+	
+<!-- </div> -->
+
+<script type="text/javascript">
+	$(function() {
+		$(".featurecarousel").jCarouselLite({
+			btnNext: ".next",
+			btnPrev: ".prev",
+			auto:5000,
+			visible:4,
+			speed:800
+		});
+	});
+</script>
+
+<?php
+	$this->load->view('general/footer');
+?>

@@ -1,0 +1,1 @@
+This directory contained poster images generated for videos that are shown on the welcome page.

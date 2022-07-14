@@ -1,0 +1,67 @@
+<form class="ajax" id="EditVideoForm" action="<?php echo(site_url("admin/ajax_editvideo")); ?>" method="POST">
+	<label>
+		Title
+		<br />
+		<input name="title" style="font-size:18px;" value="<?php echo(htmlspecialchars($title)); ?>"></label>
+	</label>
+	
+	<br />
+	
+	<label>
+		Description
+		<br />
+		<textarea name="desc" style="width:225px;height:128px;"><?php echo(htmlspecialchars($desc)); ?></textarea>
+	</label>
+	
+	
+	<label for="amount">
+		Thumbnail Time
+		<br />
+		<input type="text" name="thumb" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+		<div id="slider-range-min"></div>
+		<img id="ThumbnailPreview" src="<?php echo(base_url("/img/ajax-spinner.gif")); ?>" alt="Thumbnail" />
+		<br />
+	</label>
+	
+	<button type="submit">Edit</button>
+</form>
+<script>
+	$(function() {
+		$( "#slider-range-min" ).slider({
+			range: "min",
+			value: <?php echo($thumbnail_time); ?>,
+			min: 1,
+			max: <?php echo($duration); ?>,
+			slide: function( event, ui ) {
+				$( "#amount" ).val( ui.value );
+				$("#ThumbnailPreview").attr("src","<?php echo(base_url("/img/ajax-spinner.gif")); ?>");
+			},
+			change: function(event, ui) {
+				$("#ThumbnailPreview").attr("src","<?php echo(site_url("video/thumb/" . $video_identifier . "/214x120")); ?>/"+ui.value+"/true");
+			}
+		});
+		$( "#amount" ).val( $( "#slider-range-min" ).slider( "value" ) );
+
+		$("#ThumbnailPreview").attr("src","<?php echo(base_url("/img/ajax-spinner.gif")); ?>");
+		setTimeout(function() {
+			$("#ThumbnailPreview").attr("src","<?php echo(site_url("video/thumb/" . $video_identifier . "/214x120")); ?>/<?php echo($thumbnail_time); ?>/true");
+		}, 1000);
+		
+	});
+</script>
+
+<script>
+	/* attach a submit handler to the form */
+	$("#EditVideoForm").submit(function(event) {
+		/* stop form from submitting normally */
+		event.preventDefault(); 
+		if ($('#OptionsMenu').length = 0)
+		{
+			$.post('<?php echo(site_url("admin/ajax_editvideo/" . $video_identifier)); ?>', $("#EditVideoForm").serialize(),
+				function(data) {
+					$('#EditVideoForm').html(data);
+				}
+			);
+		} else { alert("EXIST"); }
+	});
+</script>
